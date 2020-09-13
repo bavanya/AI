@@ -42,3 +42,17 @@ def reduce_puzzle(values):
         if len([box for box in values.keys() if len(values[box]) == 0]):
             return False
     return values
+
+def search(values):
+    values = reduce_puzzle(values)
+    if values is False:
+        return False
+    if all(len(values[s]) == 1 for s in boxes): 
+        return values
+    n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+    for value in values[s]:
+        new_sudoku = values.copy()
+        new_sudoku[s] = value
+        attempt = search(new_sudoku)
+        if attempt:
+            return attempt
